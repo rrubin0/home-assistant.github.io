@@ -37,7 +37,7 @@ sensor:
 
 Configuration variables:
 
-- **host** (*Required*): This is the base URL of your SABnzbd instance including the port number if not running on 80, eg. http://192.168.1.32:8124/
+- **host** (*Required*): This is the IP address of your SABnzbd instance; eg. 192.168.1.32
 - **port** (*Optional*): The port to use whith SABnzbd instance. Defaults to 8080.
 - **api_key** (*Required*): Name that will be used in the frontend for the pin.
 - **name** (*Optional*): The name to use when displaying this SABnzbd instance.
