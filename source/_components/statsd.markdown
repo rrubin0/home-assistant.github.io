@@ -6,6 +6,7 @@ date: 2016-01-25 08:00
 sidebar: true
 comments: false
 sharing: true
+logo: statsd.png
 footer: true
 ha_category: "History"
 ha_release: 0.12
@@ -18,11 +19,6 @@ To use the `statsd` component in your installation, add the following to your `c
 ```yaml
 # Example configuration.yaml entry
 statsd:
-  host: DB_HOST_IP_ADDRESS
-  port: 20000
-  prefix: DB_TO_STORE_EVENTS
-  rate: 1
-  log_attributes: true
 ```
 
 Configuration variables:
@@ -32,6 +28,18 @@ Configuration variables:
 - **prefix** (*Optional*): Prefix to use. Defaults to `hass`.
 - **rate** (*Optional*): The sample rate. Defaults to 1.
 - **log_attributes** (*Optional*): Log state and attribute changes. This changes the default stats path.
+- **value_mapping** (*Optional*): Map non-numerical values to numerical ones.
+
+Full example:
+
+```yaml
+# Example configuration.yaml entry
+statsd:
+  prefix: home
+  rate: 5
+  value_mapping:
+    cooling: 1
+    heating: 10
+```
 
 StatsD supports various [backends](https://github.com/etsy/statsd/blob/master/docs/backend.md).
-

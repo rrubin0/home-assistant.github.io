@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "Philips Hue"
-description: "Instructions how to setup Philips Hue within Home Assistant."
+title: "Philips Hue Light"
+description: "Instructions on how to integrate Philips Hue lights into Home Assistant."
 date: 2015-03-23 20:09
 sidebar: true
 comments: false
@@ -10,25 +10,11 @@ footer: true
 logo: philips_hue.png
 ha_category: Light
 ha_iot_class: "Local Polling"
-featured: true
+ha_release: pre 0.7
 ---
 
-Philips Hue support is integrated into Home Assistant as a light platform. The preferred way to setup the Philips Hue platform is by enabling the [the discovery component](/components/discovery/).
+The Philips Hue light platform allows you to control your Philips Hue lights.
 
-If you want to enable the light component directly, add the following lines to your `configuration.yaml`:
+This component will automatically add `Lights` configured on your Hue bridges.
 
-```yaml
-# Example configuration.yaml entry
-light:
-  platform: hue
-  host: DEVICE_IP_ADDRESS
-  allow_unreachable: true
-  filename: my_hue_hub_token.conf
-```
-
-Configuration variables:
-
-- **host** (*Required*): IP address of the device, eg. 192.168.1.10.
-- **allow_unreachable** (*Optional*):  This will allow unreachable bulbs to report their state correctly. By default *name* from the device is used.
-- **filename** (*Optional*): Make this unique if specifying multiple Hue hubs.
-
+The requirement is that you have setup your [Philips Hue bridge](/components/hue/).

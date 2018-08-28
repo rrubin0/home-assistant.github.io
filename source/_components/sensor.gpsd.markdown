@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "GPSD"
-description: "Instructions how to integrate GPSD into Home Assistant."
+description: "Instructions on how to integrate GPSD into Home Assistant."
 date: 2016-07-18 07:00
 sidebar: true
 comments: false
@@ -33,7 +33,6 @@ Jul 16 09:30:33 laptop019 gpsdctl[5305]: reached a running gpsd
 To check if your setup is working, connect to port 2947 on the host where `gpsd` is running with `telnet`. This may need adjustments to your firewall.
 
 ```bash
-
 $ telnet localhost 2947
 Trying 127.0.0.1...
 Connected to localhost.
@@ -45,15 +44,12 @@ To setup a GPSD sensor in your installation, add the following to your `configur
 
 ```yaml
 # Example configuration.yaml entry
-senosr:
+sensor:
   - platform: gpsd
-    host: 127.0.0.1
-    port: 2947
-    name: GPS USB
 ```
 
 Configuration variables:
 
 - **host** (*Optional*): The host where GPSD is running. Defaults to `localhost`.
-- **port** (*Optional*): The port which GPSD is using. Defaults to 2947. 
+- **port** (*Optional*): The port which GPSD is using. Defaults to `2947`. 
 - **name** (*Optional*): Friendly name to use for the frontend. Default to GPS.

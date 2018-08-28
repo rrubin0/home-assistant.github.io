@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Alexa / Amazon Echo"
-description: "Instructions how to connect Alexa/Amazon Echo to Home Assistant."
+description: "Instructions on how to connect Alexa/Amazon Echo to Home Assistant."
 date: 2015-12-13 13:02
 sidebar: true
 comments: false
@@ -10,42 +10,23 @@ footer: true
 logo: amazon-echo.png
 ha_category: Voice
 featured: true
+ha_release: '0.10'
 ---
 
-There are two ways that you can use Amazon Echo and Home Assistant together.
+<p class='note'>
+  Use [Home Assistant Cloud](/components/cloud/) to integrate with Alexa without any effort.
+</p>
 
-No matter which method(s) you decide to use, please remember that Amazon Echo requires an active Internet connection to function. If your Internet is down or experiencing issues (or Amazon's infrastructure is having issues), neither of these methods will work.
+There are a few ways that you can use Amazon Echo and Home Assistant together.
+
+- [Build custom commands to use](#i-want-to-build-custom-commands-to-use-with-echo)
+- [Create a new Flash Briefing source](#flash-briefing-skills)
+- [Use the Smart Home API to control lights, etc](#smart-home)
+- Alternative: use the [Emulated Hue component][emulated-hue-component] to trick Alexa to thinking Home Assistant is a Philips Hue hub.
 
 Amazon has released [Echosim], a website that simulates the Alexa service in your browser. That way it is easy to test your skills without having access to a physical Amazon Echo.
 
 [Echosim]: https://echosim.io/
-
-## {% linkable_title I just want to turn devices on and off using Echo %}
-
-If you just want to be able to turn anything with a switch (like lights, switches, media players, etc) on and off, check out Michael Auchter's [Haaska][haaska-github-link] which integrates the [Alexa Lighting API][alexa-lighting-api] into Home Assistant.
-
-[haaska-github-link]: https://github.com/auchter/haaska
-[alexa-lighting-api]: https://developer.amazon.com/public/binaries/content/assets/html/alexa-lighting-api.html
-
-Implementing Haaska means you can turn things on and off by simply saying
-
-> Alexa, turn the living room lights on.
-
-or
-
-> Alexa, set the living room lights to twenty percent.
-
-instead of
-
-> Alexa, tell Home Assistant to turn the living room lights on.
-
-or
-
-> Alexa, tell Home Assistant to set the living room lights to twenty percent.
-
-In addition, you would need to build custom intents for each device and on/off combination using the below method, whereas everything just works without any extra work by using Haaska.
-
-Please note that you can use Haaska and the built-in Alexa component side-by-side without issue if you wish.
 
 ## {% linkable_title I want to build custom commands to use with Echo %}
 
@@ -57,21 +38,30 @@ The built-in Alexa component allows you to integrate Home Assistant into Alexa/A
 
 ### {% linkable_title Requirements %}
 
-Amazon requires the endpoint of a skill to be hosted via SSL. Self-signed certificates are ok because our skills will only run in development mode. Read more on [our blog][blog-lets-encrypt] about how to set up encryption for Home Assistant. If you are unable to get HTTPS up and running, consider using [this AWS Lambda proxy for Alexa skills](https://forums.developer.amazon.com/forums/thread.jspa?messageID=18604).
+Amazon requires the endpoint of a skill to be hosted via SSL. Self-signed certificates are OK because our skills will only run in development mode. Read more on [our blog][blog-lets-encrypt] about how to set up encryption for Home Assistant. When running Hass.io, using the [Let's Encrypt](/addons/lets_encrypt/) and [Duck DNS](/addons/duckdns/) add-ons is the easiest method. If you are unable to get HTTPS up and running, consider using [this AWS Lambda proxy for Alexa skills](https://community.home-assistant.io/t/aws-lambda-proxy-custom-alexa-skill-when-you-dont-have-https/5230).
 
-[blog-lets-encrypt]: https://home-assistant.io/blog/2015/12/13/setup-encryption-using-lets-encrypt/
+Additionally, note that at the time of this writing, your Alexa skill endpoint *must* accept requests over port 443 (Home Assistant default to 8123). There are two ways you can handle this:
+
+  1. In your router, forward external 443 to your Home Assistant serving port (defaults to 8123)
+  OR
+  2. Change your Home Assistant serving port to 443 this is done in the [`http`](/components/http/) section with the `server_port` entry in your `configuration.yaml` file
+
+[blog-lets-encrypt]: /blog/2015/12/13/setup-encryption-using-lets-encrypt/
 
 To get started with Alexa skills:
 
- - Log in to [Amazon developer console](https://developer.amazon.com)
- - Go to Apps & Services => Alexa => Alexa Skill Kit - Get Started
- - Add a new skill
+ - Log in to [Amazon developer console][amazon-dev-console]
+ - Click the Alexa button at the top of the console
+ - Click the yellow "Add a new skill" button in the top right
+   - Skill Type: Custom Interaction Model (default)
    - Name: Home Assistant
    - Invocation name: home assistant (or be creative, up to you)
    - Version: 1.0
    - Endpoint:
      - https
-     - https://YOUR_HOST/api/alexa?api_password=YOUR_API_PASSWORD
+     - `https://YOUR_HOST/api/alexa?api_password=YOUR_API_PASSWORD`
+
+You can use this [specially sized Home Assistant logo][large-icon] as the large icon and [this one][small-icon] as the small one.
 
 ### {% linkable_title Configuring your Amazon Alexa skill %}
 
@@ -114,59 +104,19 @@ This means that we can now ask Alexa things like:
 
 ## {% linkable_title Configuring Home Assistant %}
 
-Out of the box, the component will do nothing. You have to teach it about all intents you want it to answer to. The way it works is that the answer for each intent is based on [templates] that you define. Each template will have access to the existing states via the `states` variable but will also have access to all variables defined in the intent.
+When activated, the Alexa component will have Home Assistant's native intent support handle the incoming intents. If you want to run actions based on intents, use the [`intent_script`](/components/intent_script) component.
 
-You can use [templates] for the values of `speech/text`, `card/title` and `card/content`.
-
-Actions are using the [Home Assistant Script Syntax] and also have access to the variables from the intent.
-
-[templates]: /topics/templating/
-[Home Assistant Script Syntax]: /getting-started/scripts/
-
-Configuring the Alexa component for the above intents would look like this:
+To enable Alexa add the following entry to your `configuration.yaml` file:
 
 ```yaml
-{% raw %}# Example configuration.yaml entry
 alexa:
-  intents:
-    WhereAreWeIntent:
-      speech:
-        type: plaintext
-        text: >
-          {%- if is_state('device_tracker.paulus', 'home') and
-                 is_state('device_tracker.anne_therese', 'home') -%}
-            You are both home, you silly
-          {%- else -%}
-            Anne Therese is at {{ states("device_tracker.anne_therese") }}
-            and Paulus is at {{ states("device_tracker.paulus") }}
-          {% endif %}
-
-    LocateIntent:
-      action:
-        service: notify.notify
-        data_template:
-          message: The location of {{ User }} has been queried via Alexa.
-      speech:
-        type: plaintext
-        text: >
-          {%- for state in states.device_tracker -%}
-            {%- if state.name.lower() == User.lower() -%}
-              {{ state.name }} is at {{ state.state }}
-            {%- endif -%}
-          {%- else -%}
-            I am sorry, I do not know where {{ User }} is.
-          {%- endfor -%}
-      card:
-        type: simple
-        title: Sample title
-        content: Some more content{% endraw %}
 ```
 
 ### {% linkable_title Working With Scenes %}
 
-One of the more useful applications of Alexa integrations is to call scenes directly. This is easily achieved with some simple setup on the Home Assistant side and by letting Alexa know which scenes you want to run.
+One of the most useful applications of Alexa integrations is to call scenes directly. This is easily achieved with some simple setup on the Home Assistant side and by letting Alexa know which scenes you want to run.
 
-First we will configure Alexa. In the Amazon Interaction module add this to the intent schema:
+First, we will configure Alexa. In the Amazon Interaction module add this to the intent schema:
 
 ```json
 {
@@ -187,7 +137,15 @@ Then create a custom slot type called `Scenes` listing every scene you want to c
 <img src='/images/components/alexa/scene_slot.png' />
 Custom slot type for scene support.
 </p>
+
 The names must exactly match the scene names (minus underscores - amazon discards them anyway and we later map them back in with the template).
+
+In the new Alexa Skills Kit, you can also create synonyms for slot type values, which can be used in place of the base value in utterances. Synonyms will be replaced with their associated slot value in the intent request sent to the Alexa API endpoint, but only if there are not multiple synonym matches. Otherwise, the value of the synonym that was spoken will be used.
+
+<p class='img'>
+<img src='/images/components/alexa/scene_slot_synonyms.png' />
+Custom slot values with synonyms.
+</p>
 
 Add a sample utterance:
 
@@ -195,22 +153,23 @@ Add a sample utterance:
 ActivateSceneIntent activate {Scene}
 ```
 
-Then add the intent to your Alexa Section in your HA config file:
+Then add the intent to your intent_script section in your HA config file:
 
 ```yaml
-    ActivateSceneIntent:
-      action:
-        service: scene.turn_on
-        data_template:
-          entity_id: scene.{% raw %}{{ Scene | replace(" ", "_") }}{% endraw %}
-      speech:
-        type: plaintext
-        text: OK
+intent_script:
+  ActivateSceneIntent:
+    action:
+      service: scene.turn_on
+      data_template:
+        entity_id: scene.{% raw %}{{ Scene | replace(" ", "_") }}{% endraw %}
+    speech:
+      type: plain
+      text: OK
 ```
 
-Here we are using [templates] to take the name we gave to Alexa e.g. `downstairs on` and replace the space with an underscore so it becomes `downstairs_on` as Home Assistant expects.
+Here we are using [templates] to take the name we gave to Alexa e.g., `downstairs on` and replace the space with an underscore so it becomes `downstairs_on` as Home Assistant expects.
 
-Now say `Alexa ask homeassistant to activate <some scene>` and Alexa will activate that scene for you.
+Now say `Alexa ask Home Assistant to activate <some scene>` and Alexa will activate that scene for you.
 
 ### {% linkable_title Adding Scripts %}
 
@@ -242,24 +201,48 @@ Add a sample utterance:
 RunScriptIntent run {Script}
 ```
 
-Then add the intent to your Alexa Section in your HA config file:
+Then add the intent to your intent_script section in your HA config file:
 
 ```yaml
-    RunScriptIntent:
-      action:
-        service: script.turn_on
-        data_template:
-          entity_id: script.{% raw %}{{ Script | replace(" ", "_") }}{% endraw %}
-      speech:
-        type: plaintext
-        text: OK
+intent_script:
+  RunScriptIntent:
+    action:
+      service: script.turn_on
+      data_template:
+        entity_id: script.{% raw %}{{ Script | replace(" ", "_") }}{% endraw %}
+    speech:
+      type: plain
+      text: OK
 ```
 
-Now say `Alexa ask homeassistant to run <some script>` and Alexa will run that script for you.
+Now say `Alexa ask Home Assistant to run <some script>` and Alexa will run that script for you.
 
-## {% linkable_title Giving Alexa Some Personality%}
+### {% linkable_title Support for Launch Requests %}
+There may be times when you want to respond to a launch request initiated from a command such as "Alexa, Red Alert!".
 
-In the examples above, we told Alexa to say `OK` when she succesfully completed the task. This is effective but a little dull! We can again use [templates] to spice things up a little.
+To start, you need to get the skill id:
+
+ - Log into [Amazon developer console][amazon-dev-console]
+ - Click the Alexa button at the top of the console
+ - Click the Alexa Skills Kit Get Started button
+   - Locate the skill for which you would like Launch Request support
+   - Click the "View Skill ID" link and copy the ID
+
+The configuration is the same as an intent with the exception being you will use your skill ID instead of the intent name.
+```yaml
+intent_script:
+  amzn1.ask.skill.08888888-7777-6666-5555-444444444444:
+    action:
+      service: script.turn_on
+      entity_id: script.red_alert
+    speech:
+      type: plain
+      text: OK
+```
+
+## {% linkable_title Giving Alexa Some Personality %}
+
+In the examples above, we told Alexa to say `OK` when she successfully completed the task. This is effective but a little dull! We can again use [templates] to spice things up a little.
 
 First create a file called `alexa_confirm.yaml` with something like the following in it (go on, be creative!):
 
@@ -284,7 +267,7 @@ First create a file called `alexa_confirm.yaml` with something like the followin
           ] | random }} {% endraw %}
 ```
 
-Then, wherever you would but some simple text for a response like`OK`, replace it with a reference to the file so that:
+Then, wherever you would put some simple text for a response like `OK`, replace it with a reference to the file so that:
 
 ```
 text: OK
@@ -298,4 +281,108 @@ text: !include alexa_confirm.yaml
 
 Alexa will now respond with a random phrase each time. You can use the include for as many different intents as you like so you only need to create the list once.
 
+## {% linkable_title Flash Briefing Skills %}
 
+As of version [0.31][zero-three-one] Home Assistant supports the new [Alexa Flash Briefing Skills API][flash-briefing-api]. A Flash Briefing Skill adds a new Flash Briefing source that is generated by Home Assistant.
+
+### {% linkable_title Configuring a Flash Briefing skill in Home Assistant %}
+
+You can use [templates] for the `title`, `audio`, `text` and `display_url` configuration parameters.
+
+Here's an example configuration of a Flash briefing skill that will tell you who is at home:
+
+```yaml
+{% raw %}# Example configuration.yaml entry
+alexa:
+  flash_briefings:
+    whoishome:
+      - title: Who's at home?
+        text: >
+          {%- if is_state('device_tracker.paulus', 'home') and
+                 is_state('device_tracker.anne_therese', 'home') -%}
+            You are both home, you silly
+          {%- else -%}
+            Anne Therese is at {{ states("device_tracker.anne_therese") }}
+            and Paulus is at {{ states("device_tracker.paulus") }}
+          {% endif %}{% endraw %}
+```
+
+You can add multiple items for a feed if you want. The Amazon required UID and timestamp will be randomly generated at startup and change at every restart of Home Assistant.
+
+Please refer to the [Amazon documentation][flash-briefing-api-docs] for more information about allowed configuration parameters and formats.
+
+### {% linkable_title Configuring your Flash Briefing skill %}
+
+- Log in to [Amazon developer console][amazon-dev-console]
+- Click the Alexa navigation tab at the top of the console
+- Click on the "Get Started >" button under "Alexa Skills Kit"
+- Click the yellow "Add a new skill" button in the top right
+  - Skill Information
+    - For Skill Type select "Flash Briefing Skill API"
+    - You can enter whatever name you want
+    - Hit "Next"
+  - Interaction Model
+    - Nothing to do here
+  - Configuration
+    - Add new feed
+      - For URL, enter `https://YOUR_HOST/api/alexa/flash_briefings/BRIEFING_ID?api_password=YOUR_API_PASSWORD` where `BRIEFING_ID` is the key you entered in your configuration (such as `whoishome` in the above example). **NOTE:** Do not use a non-standard http or https port, AWS will not connect to it.
+      - You can use this [specially sized Home Assistant logo][large-icon] as the Feed Icon
+      - All other settings are up to you
+      - Hit "Next"
+  - Test
+      - Having passed all validations to reach this screen, you can now click on "< Back to All Skills" as your flash briefing is now available as in "Development" service.
+- To invoke your flash briefing, open the Alexa app on your phone or go to the [Alexa Settings Site][alexa-settings-site], open the "Skills" configuration section, select "Your Skills", scroll to the bottom, tap on the Flash Briefing Skill you just created, enable it, then manage Flash Briefing and adjust ordering as necessary.  Finally ask your Echo for your "news","flash briefing", or "briefing".
+
+
+## {% linkable_title Smart Home %}
+
+While the Skills API described above allows for arbitrary intents, all
+utterances must begin with "Alexa, tell $invocation_name ..."
+
+The [Emulated Hue component][emulated-hue-component] provides a simpler
+interface such as, "Alexa, turn on the kitchen light". However it has some
+limitations since everything looks like a light bulb.
+
+Amazon provides a Smart Home API for richer home automation control. It takes
+considerable effort to configure. The easy solution is to use
+[Home Assistant Cloud](/components/cloud/).
+
+If you don't want to use Home Assistant Cloud and are willing to do the
+integration work yourself, Home Assistant can expose an HTTP API which makes
+the integration work easier. Example configuration:
+
+```yaml
+alexa:
+  smart_home:
+    filter:
+      include_entities:
+        - light.kitchen
+        - light.kitchen_left
+      include_domains:
+        - switch
+      exclude_entities:
+        - switch.outside
+    entity_config:
+      light.kitchen:
+        name: Custom Name for Alexa
+        description: The light in the kitchen
+      switch.stairs:
+        display_categories: LIGHT
+```
+
+This exposes an HTTP POST endpoint at `http://your_hass_ip/api/alexa/smart_home`
+which accepts and returns messages conforming to the
+[Smart Home v3 payload](https://developer.amazon.com/docs/smarthome/smart-home-skill-api-message-reference.html).
+You must then create an Amazon developer account with an Alexa skill and Lambda
+function to integrate this endpoint. See
+[Haaska](https://github.com/mike-grant/haaska) for an example.
+
+[amazon-dev-console]: https://developer.amazon.com
+[flash-briefing-api]: https://developer.amazon.com/alexa-skills-kit/flash-briefing
+[flash-briefing-api-docs]: https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/flash-briefing-skill-api-feed-reference
+[large-icon]: /images/components/alexa/alexa-512x512.png
+[small-icon]: /images/components/alexa/alexa-108x108.png
+[templates]: /topics/templating/
+[zero-three-one]: /blog/2016/10/22/flash-briefing-updater-hacktoberfest/
+[alexa-settings-site]: http://alexa.amazon.com/
+[emulated-hue-component]: /components/emulated_hue/

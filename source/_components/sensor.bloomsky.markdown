@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "BloomSky Sensor"
-description: "Instructions how to integrate the BloomSky sensors within Home Assistant."
+description: "Instructions on how to integrate the BloomSky sensors within Home Assistant."
 date: 2016-02-03 20:00
 sidebar: true
 comments: false
@@ -9,6 +9,8 @@ sharing: true
 footer: true
 logo: bloomsky.png
 ha_category: Sensor
+ha_release: 0.14
+ha_iot_class: "Cloud Polling"
 ---
 
 
@@ -23,22 +25,21 @@ sensor:
   monitored_conditions:
     - Temperature
     - Humidity
-    - Rain
     - Pressure
     - UVIndex
     - Luminance
-    - Night
     - Voltage
 ```
 
 Configuration variables:
 
-- **monitored_conditions** array *Required*: The sensors that you wish to monitor on all of your devices. Select from these options:
+- **monitored_conditions** array (*Required*): The sensors that you wish to monitor on all of your devices. Select from these options:
   - Humidity
   - Luminance
-  - Night
   - Pressure
-  - Rain
   - Temperature
   - UVIndex
   - Voltage
+
+
+More conditions are available using the [BloomSky binary sensor](/components/binary_sensor.bloomsky) component.

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Free Mobile"
-description: "Instructions how to add user notifications to Home Assistant."
+description: "Instructions on how to add user notifications to Home Assistant."
 date: 2016-01-12 08:36
 sidebar: true
 comments: false
@@ -31,9 +31,10 @@ To enable SMS notifications in your installation, add the following to your `con
 ```yaml
 # Example configuration.yaml entry
 notify:
-  platform: free_mobile
-  username: YOUR_ACCOUNT_ID
-  access_token: TOKEN
+  - name: NOTIFIER_NAME
+    platform: free_mobile
+    username: YOUR_ACCOUNT_ID
+    access_token: TOKEN
 ```
 
 Configuration variables:

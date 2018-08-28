@@ -1,8 +1,12 @@
+---
+layout: compress
+---
+
 {% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}{% include site/head.html %}
 
   <body {% if page.body_id %} id="{{ page.body_id }}"{% endif %}>
 
-    <header>
+    <header class='site-header'>
       {% include site/header.html %}
     </header>
 
@@ -20,7 +24,7 @@
         <div class="grid__item two-thirds lap-one-whole palm-one-whole">
         {% endif %}
 
-          {{ content }}
+          {{ content | nofollow }}
 
         </div>
 

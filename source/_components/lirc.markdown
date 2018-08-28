@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "LIRC"
-description: "Instructions how to integrate IR remotes with LIRC into Home Assistant."
+description: "Instructions on how to integrate IR remotes with LIRC into Home Assistant."
 date: 2016-05-22 19:59
 sidebar: true
 comments: false
@@ -14,57 +14,34 @@ ha_release: 0.21
 ha_iot_class: "Local Push"
 ---
 
-[LIRC](http://www.lirc.org/) integration for Home Assistant allows you to receive signals from an infrared remote control and control actions based on the buttons you press. You can use them to set scenes or trigger any other [automation](https://home-assistant.io/components/automation/).
+[LIRC](http://www.lirc.org/) integration for Home Assistant allows you to receive signals from an infrared remote control and control actions based on the buttons you press. You can use them to set scenes or trigger any other [automation](/components/automation/).
 
-Sending IR commands is not supported in this component (yet), but can be accomplished using the [shell_command component](https://home-assistant.io/components/shell_command/) in conjunction with the `irsend` command.
+Sending IR commands is not supported in this component (yet), but can be accomplished using the [shell_command component](/components/shell_command/) in conjunction with the `irsend` command.
 
 ### {% linkable_title Installation %}
 
 To allow Home Assistant to talk to your IR receiver, you need to first make sure you have the correct dependencies installed:
 
 ```bash
-$ sudo apt-get install lirc python3-lirc
+$ sudo apt-get install lirc liblircclient-dev
 ```
-
-Check the version of `python3-lirc`:
-
-```bash
-$ apt-cache show python3-lirc
-Package: python3-lirc
-Source: python-lirc
-Version: 1.2.1-2
-```
-
-If you do not have this version or you are running in a virtual environment, then your system will completely freeze with this component active. You will need to build `python3-lirc` from source. The version of this library in the Python package index is also broken, so the typical dependency system cannot fix this. Build it from source like this:
-
-As regular user:
-
-```bash
-sudo apt-get install liblircclient-dev
-```
-
-As the user that runs hass:
-
-```bash
-(hass) $  git clone https://github.com/tompreston/python-lirc.git
-(hass) $  cd python-lirc
-(hass) $  make py3
-(hass) $  python3 setup.py build
-(hass) $  python3 setup.py install
-```
-
-If you are not using a virtual environment setup, then you'll need a `sudo` before the install line above. 
-
 
 <p class='note'>
-If you are configuring on a Raspberry Pi, there are excellent instructions with GPIO schematics and driver configurations [here](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/). Consider following these.
+If you are configuring on a Raspberry Pi, there are excellent instructions with GPIO schematics and driver configurations [here](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/). Take notice, the instructions in this blog are valid for Raspian Jesse where lirc 0.9.0 was included in the debian package. In Raspian Stretch lirc 0.9.4 is included in the Debian package.
+The configuration is slightly different :
+
+ - The `hardware.conf` file is not supported, obsoleted by a new `lirc_options.conf` file and systemd unit definitions.
+ - The former single `lirc` service is replaced with the three systemd services `lircd.service`, `lircmd.service` and `irexec.service`. There is no counterpart to the 0.9.0 `lirc` service which covered all of these. Using a separate transmitter device requires yet another service.
+ - 0.9.4 defaults to using systemd for controlling the services. This is not just start/stop functionality, systemd is used to implement new features and to address shortcomings in 0.9.0. However, traditional systemV scripts are also installed and could be used although this is less tested and not really documented.
+
+For more information have a look at `/usr/share/doc/lirc/README.Debian.gz` where the update process is explained when you have updated from jessie to stretch.
 </p>
 
 ### {% linkable_title Configuring LIRC %}
 
-Now teach LIRC about your particular remote control by preparing a lircd configuration file (`/etc/lirc/lircd.conf`). Search the [LIRC remote database](http://lirc.sourceforge.net/remotes/) for your model. If you can't find it, then you can always use the `irrecord` program to learn your remote. This will create a valid configuration file. Add as many remotes as you want by pasting them into the file. If `irrecord` doesn't work (e.g. for some air conditioner remotes), then the `mode2` program is capable of reading the codes in raw mode, followed by `irrecord -a` to extract hex codes.
+Now teach LIRC about your particular remote control by preparing a lircd configuration file (`/etc/lirc/lircd.conf`). Search the [LIRC remote database](http://lirc.sourceforge.net/remotes/) for your model. If you can't find it, then you can always use the `irrecord` program to learn your remote. This will create a valid configuration file. Add as many remotes as you want by pasting them into the file. If `irrecord` doesn't work (e.g., for some air conditioner remotes), then the `mode2` program is capable of reading the codes in raw mode, followed by `irrecord -a` to extract hex codes.
 
-Next, you have to make a `~/.lircrc` file that maps keypresses to system actions. [The configuration](http://www.lirc.org/html/configure.html) is a bit tedious but it must be done. Use the `prog = home-assistant` for all keys you want to be recognized by Home Assistant. The values you set for `button` must be the same as in the `lircd.conf` file and the values you put for `config` entry will be the sensor value in Home Assistant when you press the button. An example may look like this:
+Next, you have to make a `~/.lircrc` file that maps keypresses to system actions. The file has to be in the home dir of the user running Home Assistant, e.g. in `/home/homeassistant/.lircrc` if you're running in a virtual env. [The configuration](http://www.lirc.org/html/configure.html) is a bit tedious but it must be done. Use the `prog = home-assistant` for all keys you want to be recognized by Home Assistant. The values you set for `button` must be the same as in the `lircd.conf` file and the values you put for `config` entry will be the sensor value in Home Assistant when you press the button. An example may look like this:
 
 ```bash
 begin
@@ -110,16 +87,15 @@ The LIRC component fires `ir_command_received` events on the bus. You can captur
 ```yaml
 # Example configuration.yaml automation entry
 automation:
-- alias: Off on Remote
-  trigger:
-    platform: event
-    event_type: ir_command_received
-    event_data:
-      button_name: KEY_0
-  action:
-    service: homeassistant.turn_off
-    entity_id: group.a_lights
-
+  - alias: Off on Remote
+    trigger:
+      platform: event
+      event_type: ir_command_received
+      event_data:
+        button_name: KEY_0
+    action:
+      service: homeassistant.turn_off
+      entity_id: group.a_lights
 ```
 
-The `button_name` data values (e.g. `KEY_0`) are set by you in the `.lircrc` file.
+The `button_name` data values (e.g., `KEY_0`) are set by you in the `.lircrc` file.

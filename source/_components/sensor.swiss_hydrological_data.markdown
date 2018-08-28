@@ -1,17 +1,21 @@
 ---
 layout: page
 title: "Swiss Hydrological Data"
-description: "Instructions how to integrate hydrological data of Swiss waters within Home Assistant."
+description: "Instructions on how to integrate hydrological data of Swiss waters within Home Assistant."
 date: 2016-06-17 17:00
 sidebar: true
 comments: false
 sharing: true
 footer: true
+logo: swiss-hydrological-data.png
 ha_category: Weather
 ha_iot_class: "Cloud Polling"
 ha_release: 0.22
 ---
 
+<p class='note warning'>
+  This sensor doesn't work at the moment due to changed by the [Swiss Federal Office for the Environment (Bundesamt für Umwelt - Abt. Hydrologie)](http://www.hydrodaten.admin.ch) to access the data.
+</p>
 
 The `swiss_hydrological_data` sensor will show you details (temperature, level, and discharge) of rivers and lakes in Switzerland.
 
@@ -23,7 +27,6 @@ To enable this sensor, add the following lines to your `configuration.yaml` file
 # Example configuration.yaml entry
 sensor:
   platform: swiss_hydrological_data
-  name: Aare
   station: STATION_ID
 ```
 

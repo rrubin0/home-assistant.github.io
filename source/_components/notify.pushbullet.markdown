@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Pushbullet"
-description: "Instructions how to add user notifications to Home Assistant."
+description: "Instructions on how to add user notifications to Home Assistant."
 date: 2015-01-20 22:36
 sidebar: true
 comments: false
@@ -19,14 +19,14 @@ To enable Pushbullet notifications in your installation, add the following to yo
 ```yaml
 # Example configuration.yaml entry
 notify:
-  platform: pushbullet
-  api_key: YOUR_API_KEY
-  name: NOTIFIER_NAME
+  - name: NOTIFIER_NAME
+    platform: pushbullet
+    api_key: YOUR_API_KEY
 ```
 
 Configuration variables:
 
-- **api_key** (*Required*): Enter the API key for Pushbullet. Go to https://www.pushbullet.com/ to retrieve your API key.
+- **api_key** (*Required*): Enter the API key for Pushbullet. Go to [https://www.pushbullet.com/#settings/account](https://www.pushbullet.com/#settings/account) to retrieve your API key/access token.
 - **name** (*Optional*): Setting the optional parameter `name` allows multiple notifiers to be created. The default value is `notify`. The notifier will bind to the service `notify.NOTIFIER_NAME`.
 
 ### {% linkable_title Usage %}
@@ -53,3 +53,53 @@ If using targets, your own account's email address functions as 'send to all dev
   ]
 }
 ```
+
+To use notifications, please see the [getting started with automation page](/getting-started/automation/).
+
+### {% linkable_title URL support %}
+
+```yaml
+action:
+  service: notify.NOTIFIER_NAME
+  data:
+    title: Send URL
+    message: This is an url
+    data:
+      url: google.com
+```
+
+- **url** (*Required*): Page URL to send with Pushbullet.
+
+### {% linkable_title File support %}
+
+```yaml
+action:
+  service: notify.NOTIFIER_NAME
+  data:
+    title: Send file
+    message: This is a file
+    data:
+      file: /path/to/my/file
+```
+
+- **file** (*Required*): File to send with Pushbullet.
+
+
+### {% linkable_title File URL support %}
+
+```yaml
+action:
+  service: notify.NOTIFIER_NAME
+  data:
+    title: Send file
+    message: This is a file URL
+    data:
+      file_url:  https://cdn.pixabay.com/photo/2014/06/03/19/38/test-361512_960_720.jpg
+```
+
+- **file_url** (*Required*): File to send with Pushbullet.
+
+<p class='note'>
+Don't forget to [whitelist external directories](/docs/configuration/basic/), so Home Assistant has access to them.
+</p>
+

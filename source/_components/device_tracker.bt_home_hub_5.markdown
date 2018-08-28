@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "BT Home Hub 5"
-description: "Instructions how to integrate BT Home Hub 5 router into Home Assistant."
+description: "Instructions on how to integrate BT Home Hub 5 router into Home Assistant."
 date: 2016-06-13 13:00
 sidebar: true
 comments: false
@@ -19,15 +19,12 @@ To use a BT Home Hub 5 router in your installation, add the following to your `c
 ```yaml
 # Example configuration.yaml entry
 device_tracker:
-  platform: bt_home_hub_5
-  host: 192.168.1.254
-  interval_seconds: 10
-  consider_home: 180
-  track_new_devices: yes
+  - platform: bt_home_hub_5
+    host: 192.168.1.254
 ```
 
 Configuration variables:
 
-- **host** (*Required*): The IP address of your router, e.g. 192.168.1.254.
+- **host** (*Optional*): The IP address of your router, Default: 192.168.1.254.
 
 See the [device tracker component page](/components/device_tracker/) for instructions how to configure the people to be tracked.

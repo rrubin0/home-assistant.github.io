@@ -3,7 +3,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: https://home-assistant.io
+url: https://www.home-assistant.io
 title: Home Assistant
 subtitle: Open-source home automation platform running on Python 3
 author: Home Assistant
@@ -35,8 +35,6 @@ category_dir: blog/categories
 markdown: kramdown
 timezone: UTC
 
-# highlighter: coderay
-
 kramdown:
   input: GFM
   auto_ids:       false
@@ -48,9 +46,9 @@ kramdown:
 
 highlighter: rouge
 
-gems:
+plugins:
+  - jekyll-redirect-from
   - jekyll-time-to-read
-  - octopress-filters
   - octopress-include-tag
 
 paginate: 10          # Posts per page on the blog index
@@ -72,7 +70,13 @@ collections:
     output: true
   cookbook:
     output: true
-  topics:
+  docs:
+    output: true
+  addons:
+    output: true
+  faq:
+    output: true
+  lovelace:
     output: true
 
 # ----------------------- #
@@ -116,6 +120,17 @@ google_analytics_tracking_id: UA-57927901-1
 # Facebook Like
 facebook_like: true
 
+# Liquid template compressor
+compress_html:
+  clippings: []
+  comments: []
+  endings: []
+  ignore:
+    envs: []
+  blanklines: true
+  profile: false
+  startings: []
+
 social:
   visible: false
   facebook:
@@ -123,3 +138,20 @@ social:
 
   twitter:
     account: home_assistant
+
+# Home Assistant release details
+current_major_version: 0
+current_minor_version: 76
+current_patch_version: 2
+date_released: 2018-08-21
+
+# Either # or the anchor link to latest release notes in the blog post.
+# Must be prefixed with a # and have double quotes around it.
+# Major release:
+patch_version_notes: "#release-0762---august-21"
+# Minor release (Example #release-0431---april-25):
+
+# Date we moved to Discourse for comments
+# disqus_end_date: 2018-01-26 0:00:00
+# Disqus is adding gross ads, move all comments to discourse.
+disqus_end_date: 2010-01-26 0:00:00

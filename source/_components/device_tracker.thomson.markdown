@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Thomson"
-description: "Instructions how to integrate Thomson routers into Home Assistant."
+description: "Instructions on how to integrate Thomson routers into Home Assistant."
 date: 2015-08-30 19:00
 sidebar: true
 comments: false
@@ -21,10 +21,10 @@ To use this device tracker in your installation, add the following to your `conf
 ```yaml
 # Example configuration.yaml entry
 device_tracker:
-  platform: thomson
-  host: YOUR_ROUTER_IP
-  username: YOUR_ADMIN_USERNAME
-  password: YOUR_ADMIN_PASSWORD
+  - platform: thomson
+    host: YOUR_ROUTER_IP
+    username: YOUR_ADMIN_USERNAME
+    password: YOUR_ADMIN_PASSWORD
 ```
 
 Configuration variables:

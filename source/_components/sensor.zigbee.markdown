@@ -9,6 +9,8 @@ sharing: true
 footer: true
 logo: zigbee.png
 ha_category: Sensor
+ha_release: 0.12
+ha_iot_class: "Local Polling"
 ---
 
 There are two types of [ZigBee](http://www.zigbee.org/) sensor available to Home Assistant:
@@ -32,9 +34,9 @@ Configuration variables:
 
 - **name** (*Required*): The name you would like to give the sensor in Home Assistant.
 - **type** (*Required*): Set to `analog` or `temperature`.
-- **pin** (*Required*): The number identifying which pin to sample
+- **pin** (*Optional*): The number identifying which pin to sample.
 - **address** (*Optional*): The long 64 bit address of the remote ZigBee device whose pin you would like to sample. Do not include this variable if you want to sample the local ZigBee device's pins.
-- **max_volts** (*Optional*): The maximum voltage which the input pin is able to read. Defaults to `1.2`
+- **max_volts** (*Optional*): The maximum voltage which the input pin is able to read. Defaults to `1.2`.
 
 
 ## {% linkable_title Examples %}

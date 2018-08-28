@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "MPC-HC"
-description: "Instructions how to integrate MPC-HC into Home Assistant."
+description: "Instructions on how to integrate MPC-HC into Home Assistant."
 date: 2016-07-27 21:21
 sidebar: true
 comments: false
@@ -10,7 +10,8 @@ footer: true
 logo: mpchc.png
 ha_category: Media Player
 featured: false
-ha_release: 0.25.0
+ha_release: 0.25
+ha_iot_class: "Local Polling"
 ---
 
 
@@ -33,14 +34,12 @@ To add MPC-HC to your installation, add the following to your `configuration.yam
 ```yaml
 # Example configuration.yaml entry
 media_player:
-  platform: mpchc
-  host: http://192.168.0.123
-  port: 13579
-  name: MPC-HC
+  - platform: mpchc
+    host: http://192.168.0.123
 ```
 
 Configuration variables:
 
-- **host** (*Required*): The host name or address of the device that is running MPC-HC
-- **port** (*Required*): The port number, default 13579
+- **host** (*Required*): The host name or address of the device that is running MPC-HC.
+- **port** (*Optional*): The port number. Defaults to 13579.
 - **name** (*Optional*): The name of the device used in the frontend.

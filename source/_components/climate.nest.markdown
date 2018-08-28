@@ -1,30 +1,25 @@
 ---
 layout: page
 title: "Nest Thermostat"
-description: "Instructions how to integrate Nest thermostats within Home Assistant."
+description: "Instructions on how to integrate Nest thermostats within Home Assistant."
 date: 2015-03-23 19:59
 sidebar: true
 comments: false
 sharing: true
 footer: true
-logo: nest_thermostat.png
+logo: nest.png
 ha_category: Climate
+ha_iot_class: "Cloud Push"
 ---
 
 
 The `nest` climate platform let you control a thermostat from [Nest](https://nest.com).
 
-To set it up, add the following information to your `configuration.yaml` file:
-
-```yaml
-climate:
-  platform: nest
-```
+<p class='note'>
+You must have the [Nest component](/components/nest/) configured to use these sensors.  The `nest` climate component will automatically be setup when you do.
+</p>
 
 <p class='img'>
   <img src='{{site_root}}/images/screenshots/nest-thermostat-card.png' />
 </p>
 
-<p class='note'>
-  You must have the [Nest component](https://home-assistant.io/components/nest/) configured to use this sensor.
-</p>

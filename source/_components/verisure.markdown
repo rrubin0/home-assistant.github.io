@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Verisure"
-description: "Instructions how to setup Verisure devices within Home Assistant."
+description: "Instructions on how to setup Verisure devices within Home Assistant."
 date: 2015-08-17 20:28
 sidebar: true
 comments: false
@@ -10,6 +10,7 @@ footer: true
 logo: verisure.png
 ha_category: Hub
 ha_release: pre 0.7
+ha_iot_class: "Cloud Polling"
 ---
 
 Home Assistant has support to integrate your [Verisure](https://www.verisure.com/) devices.
@@ -21,6 +22,7 @@ We support:
  * Reading from thermometers and hygrometers integrated in various [devices](/components/sensor.verisure/)
  * Mouse Detector
  * [Locks](/components/lock.verisure/)
+ * [Door & Window](/components/binary_sensor.verisure/)
 
 To integrate Verisure with Home Assistant, add the following section to your `configuration.yaml` file:
 
@@ -29,13 +31,6 @@ To integrate Verisure with Home Assistant, add the following section to your `co
 verisure:
   username: USERNAME
   password: PASSWORD
-  alarm: 1
-  hygrometers: 0
-  smartplugs: 1
-  thermometers: 0
-  locks: 0
-  mouse: 1
-  code_digits: 4
 ```
 
 Configuration variables:
@@ -48,5 +43,6 @@ Configuration variables:
 - **locks** (*Optional*): Set to 1 to show locks, 0 to disable. Default 1.
 - **thermometers** (*Optional*): Set to 1 to show thermometers, 0 to disable. Default 1.
 - **mouse** (*Optional*): Set to 1 to show mouse detectors, 0 to disable. Default 1.
+- **door_window** (*Optional*): Set to 1 to show door and window sensors, 0 to disable. Default 1.
 - **code_digits** (*Optional*): Number of digits in PIN code. Default 4.
-
+- **giid** (*Optional*): The GIID of your installation (If you have more then one alarm system). To find the GIID for your systems run 'python verisure.py EMAIL PASSWORD installations'

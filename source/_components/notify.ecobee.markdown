@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Ecobee Notify"
-description: "Instructions how to setup the Ecobee notification component within Home Assistant."
+description: "Instructions on how to setup the Ecobee notification component within Home Assistant."
 date: 2016-05-12 09:00
 sidebar: true
 comments: false
@@ -19,8 +19,8 @@ To use this notification platform in your installation, add the following to you
 ```yaml
 # Example configuration.yaml entry
 notify:
-  name: NOTIFIER_NAME
-  platform: ecobee
+  - name: NOTIFIER_NAME
+    platform: ecobee
 ```
 
 Configuration variables:

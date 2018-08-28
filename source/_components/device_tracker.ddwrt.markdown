@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "DD-WRT"
-description: "Instructions how to integrate DD-WRT based routers into Home Assistant."
+description: "Instructions on how to integrate DD-WRT based routers into Home Assistant."
 date: 2015-05-11 09:00
 sidebar: true
 comments: false
@@ -19,16 +19,17 @@ To use a DD-WRT router in your installation, add the following to your `configur
 ```yaml
 # Example configuration.yaml entry
 device_tracker:
-  platform: ddwrt
-  host: ROUTER_IP_ADDRESS
-  username: YOUR_ADMIN_USERNAME
-  password: YOUR_ADMIN_PASSWORD
+  - platform: ddwrt
+    host: ROUTER_IP_ADDRESS
+    username: YOUR_ADMIN_USERNAME
+    password: YOUR_ADMIN_PASSWORD
 ```
 
 Configuration variables:
 
-- **host** (*Required*): The IP address of your router, e.g. 192.168.1.1.
-- **username** (*Required*: The username of an user with administrative privileges, usually *admin*.
+- **host** (*Required*): The IP address of your router, e.g., `192.168.1.1`.
+- **username** (*Required*: The username of an user with administrative privileges, usually `admin`.
 - **password** (*Required*): The password for your given admin account.
 
+By default Home Assistant pulls information about connected devices from DD-WRT every 5 seconds.
 See the [device tracker component page](/components/device_tracker/) for instructions how to configure the people to be tracked.

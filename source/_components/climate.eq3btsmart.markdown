@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "EQ3 Bluetooth Smart Thermostats"
-description: "Instructions how to integrate EQ3 Bluetooth Smart Thermostats into Home Assistant."
+description: "Instructions on how to integrate EQ3 Bluetooth Smart Thermostats into Home Assistant."
 date: 2016-04-18 22:00
 sidebar: true
 comments: false
@@ -9,56 +9,45 @@ sharing: true
 footer: true
 logo: eq3.gif
 ha_category: Climate
-ha_iot_class: "Local Poll"
+ha_iot_class: "Local Polling"
 ---
-
 
 The `eq3btsmart` climate platform allows you to integrate EQ3 Bluetooth Smart Thermostats.
 
-The only functionality is to set the temperature, there doesn't seem to be any way to query the temperature sensor or battery level ([read more](https://forum.fhem.de/index.php/topic,39308.15.html)).
+The current functionality allows setting the temperature as well as controlling the supported modes with help of [python-eq3bt](https://github.com/rytilahti/python-eq3bt) library.
+As the device doesn't contain a temperature sensor ([read more](https://forum.fhem.de/index.php/topic,39308.15.html)),
+we report target temperature also as current one.
 
-Setup is a bit more cumbersome than for most other thermostats. It has to be paired first:
-
-```bash
-bluetoothctl
-scan on
-<Wait for the thermostat to be found, which looks like this: [NEW] Device 00:11:22:33:44:55 CC-RT-BLE>
-scan off
-<Set the thermostat to pairing mode.>
-pair <MAC>
-trust <MAC>
-disconnect <MAC>
-exit
-```
-
-Then check with gatttool if the connection works as expected:
+### Testing the connectivity ###
+Before configuring Home Assistant you should check that connectivity with the thermostat is working, which can be done with the eq3cli tool:
 
 ```bash
-gatttool -b 00:11:22:33:44:55 -I
-[00:11:22:33:44:55][LE]> connect
-Attempting to connect to 00:11:22:33:44:55
-Connection successful
-[00:11:22:33:44:55][LE]> char-write-req 0x0411 03
-Characteristic value was written successfully
-Notification handle = 0x0421 value: 02 01 09 14 04 2d
-[00:11:22:33:44:55][LE]> disconnect
-[00:11:22:33:44:55][LE]> exit
-```
+eq3cli --mac 00:11:22:33:44:55
 
-Important: For gatttool or homeassistant to work, the thermostat needs to be disconnected from bluetoothd, so I found it best to modify the hass-daemon startscript by adding:
+[00:1A:22:XX:XX:XX] Target 17.0 (mode: auto dst, away: no)
+Locked: False
+Batter low: False
+Window open: False
+Boost: False
+Current target temp: 21.0
+Current mode: auto dst
+Valve: 0
+``` 
 
-```bash
-/usr/bin/bt-device -d CC-RT-BLE
-```
-
-to the start function of /etc/init.d/hass-daemon.
-
+### Configuration ###
 
 ```yaml
 # Example configuration.yaml entry
 climate:
-  platform: eq3btsmart
+  - platform: eq3btsmart
     devices:
       room1:
         mac: '00:11:22:33:44:55'
 ```
+
+Configuration variables:
+
+- **devices** array (*Required*): List of thermostats.
+  - **[device-name]** (*Required*): The name to use for the thermostat.
+    - **mac** (*Required*): MAC address of the thermostat.
+

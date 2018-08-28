@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Transmission Switch"
-description: "Instructions how to integrate Transmission within Home Assistant."
+description: "Instructions on how to integrate Transmission within Home Assistant."
 date: 2015-06-02 09:00
 sidebar: true
 comments: false
@@ -23,10 +23,6 @@ To add Transmission to your installation, add the following to your `configurati
 switch:
   platform: transmission
   host: IP_ADDRESS
-  port: 9091
-  name: Transmission
-  username: USERNAME
-  password: PASSWORD
 ```
 
 Configuration variables:

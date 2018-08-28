@@ -1,14 +1,14 @@
 ---
 layout: page
 title: "Browser"
-description: "Instructions how to setup the browser component with Home Assistant."
+description: "Instructions on how to setup the browser component with Home Assistant."
 date: 2015-01-24 14:39
 sidebar: true
 comments: false
 sharing: true
 footer: true
 logo: home-assistant.png
-ha_category: Other
+ha_category: Utility
 ---
 
 
@@ -25,7 +25,7 @@ browser:
 
 | Service data attribute | Optional | Description |
 | ---------------------- | -------- | ----------- |
-| `url`                  |       no | The url to open
+| `url`                  |       no | The URL to open.
 
 
 ### {% linkable_title Usage %}

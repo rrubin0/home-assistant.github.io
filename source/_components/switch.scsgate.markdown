@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "SCSGate Switch"
-description: "Instructions how to integrate SCSGate switches into Home Assistant."
+description: "Instructions on how to integrate SCSGate switches into Home Assistant."
 date: 2016-01-31 22:15
 sidebar: true
 comments: false
@@ -10,6 +10,7 @@ footer: true
 logo: bus_scs.png
 ha_category: Switch
 ha_release: 0.13
+ha_iot_class: "Local Polling"
 ---
 
 The SCSGate device can control switches of the BTicino MyHome system.
@@ -19,11 +20,10 @@ To enable SCSGate switches in your installation, add the following to your `conf
 ```yaml
 # Example configuration.yaml entry
 switch:
-  platform: scsgate
-  devices:
-    living_room:
-      name: Living Room
-      scs_id: XXXXX
+  - platform: scsgate
+    devices:
+      living_room:
+        scs_id: XXXXX
 ```
 
 Configuration variables:

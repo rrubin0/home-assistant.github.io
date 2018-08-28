@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "MySensors Binary Sensor"
-description: "Instructions how to integrate MySensors binary sensors into Home Assistant."
+description: "Instructions on how to integrate MySensors binary sensors into Home Assistant."
 date: 2016-04-13 14:20 +0100
 sidebar: true
 comments: false
@@ -10,6 +10,7 @@ footer: true
 logo: mysensors.png
 ha_category: Binary Sensor
 ha_release: 0.14
+ha_iot_class: "Local Push"
 ---
 
 Integrates MySensors binary sensors into Home Assistant. See the [main component] for configuration instructions.
@@ -85,4 +86,4 @@ void loop()
 ```
 
 [main component]: /components/mysensors/
-[serial api]: https://www.mysensors.org/download/serial_api_15
+[serial api]: http://www.mysensors.org/download

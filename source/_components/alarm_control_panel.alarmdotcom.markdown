@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Alarm.com Alarm Control Panel"
-description: "Instructions how to integrate Alarm.com into Home Assistant."
+description: "Instructions on how to integrate Alarm.com into Home Assistant."
 date: 2016-01-14 22:00
 sidebar: true
 comments: false
@@ -12,7 +12,7 @@ ha_category: Alarm
 ha_release: 0.11
 ---
 
-The `alarmdotcom` platform is consuming the information provided by a [Alarm.com](https://www.alarm.com/).
+The `alarmdotcom` platform is consuming the information provided by [Alarm.com](https://www.alarm.com/).
 
 To enable this, add the following lines to your `configuration.yaml`:
 
@@ -20,8 +20,6 @@ To enable this, add the following lines to your `configuration.yaml`:
 # Example configuration.yaml entry
 alarm_control_panel:
   platform: alarmdotcom
-  name: "HA Alarm"
-  code: PASSCODE
   username: YOUR_USERNAME
   password: YOUR_PASSWORD
 ```
@@ -32,4 +30,3 @@ Configuration variables:
 - **password** (*Required*): Password for Alarm.com account.
 - **name** (*Optional*): The name of the alarm. Default is 'Alarm.com'.
 - **code** (*Optional*): Specifies a code to enable or disable the alarm in the frontend.
-

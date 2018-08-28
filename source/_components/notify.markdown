@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Notifications"
-description: "Instructions how to add user notifications to Home Assistant."
+description: "Instructions on how to add user notifications to Home Assistant."
 date: 2015-01-20 22:36
 sidebar: true
 comments: false
@@ -16,14 +16,12 @@ The `notify` component makes it possible to send notifications to a wide variety
 ```yaml
 # Example configuration.yaml entry
 notify:
-  platform: pushbullet
-  # Optional name for the notify service
-  name: paulus
-  # api_key is a required config key by the pushbullet platform
-  api_key: ABCDEFG
+  - platform: pushbullet
+    name: paulus
+    api_key: ABCDEFG
 ```
 
-The **name** parameter is optional but needed if you want to use multiple platforms. The platform will be exposed as service `notify/<name>`. The name will default to `notify` if not supplied.
+The **name** parameter is optional but needed if you want to use multiple platforms. The platform will be exposed as service `notify.<name>`. The name will default to `notify` if not supplied.
 
 ### {% linkable_title Service %}
 
@@ -36,9 +34,9 @@ Once loaded, the `notify` platform will expose a service that can be called to s
 | `target`               |      yes | Some platforms will allow specifying a recipient that will receive the notification. See your platform page if it is supported.
 | `data`                 |      yes | On platforms who have extended functionality. See your platform page if it is supported.
 
-The notification component supports specifying [templates](/topics/templating/) for both the `message` and the `title`. This will allow you to use the current state of Home Assistant in your notifications.
+The notification component supports specifying [templates](/topics/templating/) with `data_template`. This will allow you to use the current state of Home Assistant in your notifications.
 
-In an [action](https://home-assistant.io/getting-started/automation-action/) of your [automation setup](/getting-started/automation/) it could look like this with a customized subject.
+In an [action](/getting-started/automation-action/) of your [automation setup](/getting-started/automation/) it could look like this with a customized subject.
 
 ```yaml
 action:
@@ -50,7 +48,7 @@ action:
 
 ### {% linkable_title Test if it works %}
 
-A simple way to test if you have set up your notify platform correctly is to use <img src='/images/screenshots/developer-tool-services-icon.png' alt='service developer tool icon' class="no-shadow" height="38" /> **Services** from the **Developer Tools**. Choose your service (*notify/xyz*) from the list of **Available services:** and enter something like the sample below into  the **Service Data** field and hit **CALL SERVICE**.
+A simple way to test if you have set up your notify platform correctly, is to use <img src='/images/screenshots/developer-tool-services-icon.png' alt='service developer tool icon' class="no-shadow" height="38" /> **Services** from the **Developer Tools**. Choose your service from the dropdown menu **Service**, enter something like the sample below into the **Service Data** field, and hit **CALL SERVICE**.
 
 ```json
 {
@@ -61,8 +59,8 @@ For services which have support for sending images.
 
 ```json
 { "message": "Test plugin",
-  "data": { 
-    "photo": { 
+  "data": {
+    "photo": {
         "url": "http://www.gbsun.de/gbpics/berge/berge106.jpg"
     }
   }
@@ -81,6 +79,4 @@ If the service support sending the location, the data from this sample can be us
   }
 }
 ```
-
-
 

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "AWS SQS"
-description: "Instructions how to publish messages to AWS SQS from Home Assistant."
+description: "Instructions on how to publish messages to AWS SQS from Home Assistant."
 date: 2016-05-14 16:35
 sidebar: true
 comments: false
@@ -19,12 +19,11 @@ To use this notification platform in your installation, add the following to you
 ```yaml
 # Example configuration.yaml entry
 notify:
-  platform: aws_sqs
-  name: NOTIFIER_NAME
-  aws_access_key_id: AWS_ACCESS_KEY_ID
-  aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-  profile_name: AWS_PROFILE
-  region_name: 'us-east-1'
+  - name: NOTIFIER_NAME
+    platform: aws_sqs
+    aws_access_key_id: AWS_ACCESS_KEY_ID
+    aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+    region_name: 'us-east-1'
 ```
 
 Configuration variables:

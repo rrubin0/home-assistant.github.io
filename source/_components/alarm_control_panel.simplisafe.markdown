@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "SimpliSafe Alarm Control Panel"
-description: "Instructions how to integrate SimpliSafe into Home Assistant."
+description: "Instructions on how to integrate SimpliSafe into Home Assistant."
 date: 2016-07-02 22:00
 sidebar: true
 comments: false
@@ -20,8 +20,6 @@ To enable this, add the following lines to your `configuration.yaml`:
 # Example configuration.yaml entry
 alarm_control_panel:
   platform: simplisafe
-  name: "HA Alarm"
-  code: PASSCODE
   username: YOUR_USERNAME
   password: YOUR_PASSWORD
 ```

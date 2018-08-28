@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Verisure Alarm"
-description: "Instructions how to setup the Verisure Alarm control panel within Home Assistant."
+description: "Instructions on how to setup the Verisure Alarm control panel within Home Assistant."
 date: 2016-02-15 22:00
 sidebar: true
 comments: false
@@ -10,6 +10,7 @@ footer: true
 logo: verisure.png
 ha_category: Alarm
 ha_release: 0.7.3
+ha_iot_class: "Cloud Polling"
 ---
 
 

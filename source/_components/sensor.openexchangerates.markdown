@@ -25,14 +25,27 @@ To enable this sensor, add the following lines to your `configuration.yaml` file
 sensor:
   - platform: openexchangerates
     api_key: YOUR_API_KEY
-    base: USD
     quote: EUR
-    name: USDEUR
 ```
 
-Configuration variables:
+{% configuration %}
+name:
+  description: The name of the sensor.
+  required: false
+  type: string
+  default: Exchange Rate Sensor
+api_key:
+  description: "The API Key for [Open Exchange Rates](https://openexchangerates.org)."
+  required: true
+  type: string
+quote:
+  description: The symbol of the quote or target currency.
+  required: true
+  type: string
+base:
+  description: The symbol of the base currency.
+  required: false
+  type: string
+  default: USD
+{% endconfiguration %}
 
-- **api_key** (*Required*): API Key for [Open Exchange Rates](https://openexchangerates.org).
-- **name** (*Optional*): Name to use in the frontend.
-- **base** (*Optional*): The symbol of the base currency. Defaults to USD 
-- **quote** (*Required*): The symbol of the quote or target currency.

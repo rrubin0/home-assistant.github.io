@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "SABnzbd"
-description: "Instructions how to integrate SABnzbd within Home Assistant."
+title: "SABnzbd Sensor"
+description: "Instructions on how to integrate SABnzbd with Home Assistant."
 date: 2015-03-23 19:59
 sidebar: true
 comments: false
@@ -14,37 +14,6 @@ ha_iot_class: "Local Polling"
 ---
 
 
-The `sabnzbd` platform will allow you to monitor your downloads with [SABnzbd](http://sabnzbd.org) from within Home Assistant and setup automation based on the information.
+The `sabnzbd` sensor platform will allow you to monitor your downloads with [SABnzbd](http://sabnzbd.org) from within Home Assistant.
 
-To use SABnzbd with your installation, add the following to your `configuration.yaml` file:
-
-```yaml
-# Example configuration.yaml entry
-sensor:
-  platform: sabnzbd
-  name: SAB
-  api_key: YOUR_API_KEY
-  host: YOUR_SABNZBD_HOST
-  port: 8080
-  monitored_variables:
-    - 'current_status'
-    - 'speed'
-    - 'queue_size'
-    - 'queue_remaining'
-    - 'disk_size'
-    - 'disk_free'
-```
-
-Configuration variables:
-
-- **host** (*Required*): This is the base URL of your SABnzbd instance including the port number if not running on 80, eg. http://192.168.1.32:8124/
-- **port** (*Optional*): The port to use whith SABnzbd instance. Defaults to 8080.
-- **api_key** (*Required*): Name that will be used in the frontend for the pin.
-- **name** (*Optional*): The name to use when displaying this SABnzbd instance.
-- **monitored_variables** array (*Required*): List of the monitored variables.
-  - **current_status**: current status of the SABnzbd instance
-  - **speed**: Current speed
-  - **queue_size**: Size of the queue
-  - **queue_remaining**: Remaining elements in the queue
-  - **disk_size**: Disk size of the storage location
-  - **disk_free**: Free disk space at the sotrage location
+To add SABnzbd sensors, please follow the instructions for the [SABnzbd component](/components/sabnzbd). 

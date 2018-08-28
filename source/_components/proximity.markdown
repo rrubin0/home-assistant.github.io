@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Proximity"
-description: "Instructions how to setup Proximity monitoring within Home Assistant."
+description: "Instructions on how to setup Proximity monitoring within Home Assistant."
 date: 2016-02-07 10:00
 sidebar: true
 comments: false
@@ -38,36 +38,43 @@ To enable this component in your installation, add the following to your `config
 ```yaml
 # Example configuration.yaml entry
 proximity:
-  zone: home
-  ignored_zones:
-    - twork
-    - elschool
-  devices:
-    - device_tracker.nwaring_nickmobile
-    - device_tracker.eleanorsiphone
-    - device_tracker.tsiphone
-  tolerance: 50
-  unit_of_measurement: mi
+  home: 
+    ignored_zones:
+      - twork
+    devices:
+      - device_tracker.nwaring_nickmobile
+    tolerance: 50
+    unit_of_measurement: mi
 ```
 
 Configuration variables:
 
 - **zone** (*Optional*): The zone to which this component is measuring the distance to. Default is the home zone.
-- **ignored_zones** array (*Optional*): Where proximity is not calculated for a device (either the device being monitored or ones being compared (e.g. work or school).
-- **devices** array (*Optional*):  A list of devices to compare location against to check closeness to the configured zone.
+- **ignored_zones** array (*Optional*): Where proximity is not calculated for a device (either the device being monitored or ones being compared (e.g., work or school).
+- **devices** array (*Optional*): A list of devices to compare location against to check closeness to the configured zone.
 - **tolerance** (*Optional*): The tolerance used to calculate the direction of travel in meters (m) to filter out small GPS coordinate changes.
-- **unit_of_measurement** (*Optional*): The unit of measurement for distance. Valid values are (km, m, mi, ft) [kilometers, meters, miles and feet respectfully]. The default value is kilometers.
+- **unit_of_measurement** (*Optional*): The unit of measurement for distance. Valid values are (km, m, mi, ft) [kilometers, meters, miles and feet respectively]. The default value is kilometers.
 
 To add multiple proximity components, simply use a list in your `configuration.yaml` file:
 
 ```yaml
 # Example configuration.yaml entry
 proximity:
-  - zone: home
+  home:
+    ignored_zones:
+      - twork
+      - elschool
+    devices:
+      - device_tracker.nwaring_nickmobile
+      - device_tracker.eleanorsiphone
+      - device_tracker.tsiphone
+    tolerance: 50
+    unit_of_measurement: mi
+  home3:
     devices:
       - device_tracker.tsiphone
     tolerance: 50
-  - zone: work
+  work:
     devices:
       - device_tracker.elanorsiphone
     tolerance: 10

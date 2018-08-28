@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Command line Notify"
-description: "Instructions how to add command line notifications to Home Assistant."
+description: "Instructions on how to add command line notifications to Home Assistant."
 date: 2016-02-22 20:00
 sidebar: true
 comments: false
@@ -19,9 +19,9 @@ To enable those notifications in your installation, add the following to your `c
 ```yaml
 # Example configuration.yaml entry
 notify:
-  name: NOTIFIER_NAME
-  platform: command_line
-  command: "espeak -vmb/mb-us1"
+  - name: NOTIFIER_NAME
+    platform: command_line
+    command: "espeak -vmb/mb-us1"
 ```
 
 Configuration variables:

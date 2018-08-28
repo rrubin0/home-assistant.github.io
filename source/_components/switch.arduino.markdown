@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Arduino Switch"
-description: "Instructions how to integrate Arduino boards pins as switches within Home Assistant."
+description: "Instructions on how to integrate Arduino boards pins as switches within Home Assistant."
 date: 2015-09-14 18:28
 sidebar: true
 comments: false
@@ -10,6 +10,7 @@ footer: true
 logo: arduino.png
 ha_category: DIY
 ha_release: pre 0.7
+ha_iot_class: "Local Polling"
 ---
 
 
@@ -24,21 +25,38 @@ switch:
   pins:
     11:
       name: Fan Office
-      type: digital
-      default: on
-      negate: true
     12:
       name: Light Desk
-      type: digital
+      initial: true
+      negate: true
 ```
 
-Configuration variables:
+{% configuration %}
+pins:
+  description: List of of pins to use.
+  required: true
+  type: map
+  keys:
+    pin_number:
+      description: The pin number that corresponds with the pin numbering schema of your board.
+      required: true
+      type: map
+      keys:
+        name:
+          default: Name that will be used in the frontend for the pin.
+          type: string
+          required: false
+        initial:
+          default: The initial value for this port.
+          type: boolean
+          required: false
+          default: false
+        negate:
+          default: If this pin should be inverted.
+          type: boolean
+          required: false
+          default: false
+{% endconfiguration %}
 
-- **pins** (*Required*): Array of pins to use. The number corresponds with the pin numbering schema of your board.
-  - **name**: Name that will be used in the frontend for the pin.
-  - **type**: The type of the pin. At the moment only 'digital' is supported.
-  - **default**: The initial value for this port.
-  - **negate**: If this pin should be inverted.
-
-The digital pins are numbered from 0 to 13. The available pins are 2 till 13. For testing purposes you can use pin 13 because with that pin you can control the internal LED.
+The digital pins are numbered from 0 to 13 on a Arduino UNO. The available pins are 2 till 13. For testing purposes you can use pin 13 because with that pin you can control the internal LED.
 

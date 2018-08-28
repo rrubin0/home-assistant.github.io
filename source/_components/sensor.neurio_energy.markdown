@@ -1,14 +1,14 @@
 ---
 layout: page
 title: "Neurio"
-description: "Instructions how to integrate Neurio within Home Assistant."
+description: "Instructions on how to integrate Neurio within Home Assistant."
 date: 2016-02-15 21:50
 sidebar: true
 comments: false
 sharing: true
 footer: true
 logo: neurio.png
-ha_category: Sensor
+ha_category: Energy
 ha_iot_class: "Cloud Polling"
 ha_release: 0.14
 ---
@@ -22,10 +22,13 @@ To enable this sensor in your installation, add the following to your `configura
 # Example configuration.yaml entry
 sensor:
   platform: neurio_energy
-  api_key: API_KEY
-  api_secret: API_SECRET
-  sensor_id: "SENSOR_ID"
+  api_key: CLIENT_ID
+  api_secret: CLIENT_SECRET
 ```
+
+Two sensors will be created with the following names:
+- **Energy Usage**: Current active power usage in Watts.  Updated every 10 seconds.
+- **Daily Energy Usage**: Daily power usage in kWh.  Updated every 2.5 minutes.
 
 Configuration variables:
 

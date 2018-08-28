@@ -13,7 +13,7 @@ og_image: /images/blog/2016-01-release-12/social.png
 
 Another sprint has come to an end and it seems that we have not slowed down a single bit 🚀. 0.12 is full of new components, platforms and organizational additions.
 
-I would like to give a shout out to [Greg Dowling (@pavoni)][@pavoni] as every release includes new work from him. He is constantly adding support for new platforms or improving the reliablity of existing components and platforms. Keep up the good work!
+I would like to give a shout out to [Greg Dowling (@pavoni)][@pavoni] as every release includes new work from him. He is constantly adding support for new platforms or improving the reliability of existing components and platforms. Keep up the good work!
 
 This release includes a very frequent requested feature: the ability to organize entities in different tabs in the frontend. See [the demo] to see this in action and read more in the [group documentation][group] how to get started.
 
@@ -87,6 +87,6 @@ Example of the new views in the frontend. <a href='/components/group/'>Learn mor
 [@w1ll1am23]: https://github.com/w1ll1am23
 [@zmrow]: https://github.com/zmrow
 
-### Backwards incompatible changes
+### {% linkable_title Backwards incompatible changes %}
  - Nest config has moved from thermostat to the [Nest component][Nest].
- - Entity IDs for Z-Wave devices are now generated in a deterministic way causing all IDs to change starting this release. This is a one time change.
+ - Entity IDs for Z-Wave devices are now generated in a deterministic way causing all IDs to change starting this release. This is a one time change. [(Changed again in 0.31)](/blog/2016/10/22/flash-briefing-updater-hacktoberfest/)
